@@ -4,7 +4,7 @@ const App = () => {
   return (
     <View style={styles.container}>
       <StatusBar />
-      <Text>Open up App.tsx to start working on your app!</Text>
+      <Text>Bacon frito gosto</Text>
     </View>
   );
 };
