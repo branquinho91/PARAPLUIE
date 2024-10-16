@@ -5,6 +5,8 @@ import Home from "./src/pages/Home";
 
 const App = () => {
   return (
+    <Login />
+    /*
     <SafeAreaView>
       <StatusBar />
       <AuthProvider>
@@ -12,6 +14,7 @@ const App = () => {
         <Home />
       </AuthProvider>
     </SafeAreaView>
+    */
   );
 };
 
