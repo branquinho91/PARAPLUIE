@@ -2,16 +2,27 @@ import { useState, useContext } from "react";
 import { View, TouchableOpacity, StyleSheet, TextInput, Text, Image } from "react-native";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = () => {
+    console.log(email + " " + password);
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Bem vindo(a) a PARAPLUIE Farmácias</Text>
+      <Text style={styles.header}>PARAPLUIE Farmácias</Text>
       <Image source={require("../../assets/BACON_HOLDER.jpg")} style={styles.image} />
 
       <Text style={styles.text}>Email</Text>
       <TextInput style={styles.input} placeholder="nome@email.com" autoCapitalize="none" keyboardType="email-address" />
 
       <Text style={styles.text}>Senha</Text>
-      <TextInput style={styles.input} placeholder="*******" secureTextEntry />
+      <TextInput style={styles.input} placeholder="senha@123" secureTextEntry />
+
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.textButton}>Entrar</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -49,9 +60,22 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   image: {
-    width: 200,
-    height: 150,
+    width: 150,
+    height: 100,
     marginBottom: 20,
+  },
+  button: {
+    width: "25%",
+    height: 40,
+    backgroundColor: "#007bff",
+    borderRadius: 4,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  textButton: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
 
