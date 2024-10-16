@@ -4,14 +4,8 @@ import axios from "axios";
 import { AuthContext } from "../contexts/AuthContext";
 import { IUser } from "../interfaces/interfaces";
 
-const Login = () => {
-  const authContext = useContext(AuthContext);
-
-  if (!authContext) {
-    throw new Error("AuthContext não foi encontrado.");
-  }
-
-  const { login } = authContext;
+const Login = ({ navigation }) => {
+  const { login, user } = useContext(AuthContext);  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -20,21 +14,23 @@ const Login = () => {
       Alert.alert("Preencha todos os campos!");
       return;
     }
-
     try {
-      const response = await axios.post("http://192.168.0.6:3000/login", { email, password });
-      const userData: IUser = response.data;
+      const { data } = await axios.post<IUser>(process.env.EXPO_PUBLIC_API_URL + "/login", { email, password });
+      // somente profile e name
+      const userData = data;
 
       if (userData) {
         login(userData);
+        if (userData.profile === "admin") {
+          navigation.navigate("Home");
+        }
       } else {
         Alert.alert("Usuário não encontrado!");
       }
-    } catch (error: any) {
+    } catch (error) {
       const message = error.response?.data?.message || "Erro ao fazer login";
       Alert.alert(message);
     }
-    
   };
 
   return (
