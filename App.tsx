@@ -1,11 +1,17 @@
-import { StyleSheet, Text, View, StatusBar } from "react-native";
+import { StyleSheet, Text, View, StatusBar, SafeAreaView } from "react-native";
+import Login from "./src/pages/Login";
+import { AuthProvider } from "./src/contexts/AuthContext";
+import Home from "./src/pages/Home";
 
 const App = () => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView>
       <StatusBar />
-      <Text>Bacon frito gosto</Text>
-    </View>
+      <AuthProvider>
+        <Login />
+        <Home />
+      </AuthProvider>
+    </SafeAreaView>
   );
 };
 
