@@ -8,10 +8,12 @@ const AuthProvider: FC<IAuthProviderProps> = ({ children }) => {
 
   const login = (userData: IUser) => {
     setUser(userData);
+    // navigation chamar a tela de home
   };
 
   const logout = () => {
     setUser(null);
+    // navigation chamar a tela de login
   };
 
   return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>;

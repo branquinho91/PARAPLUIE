@@ -1,12 +1,40 @@
 import { useState, useContext } from "react";
-import { View, TouchableOpacity, StyleSheet, TextInput, Text, Image } from "react-native";
+import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import axios from "axios";
+import { AuthContext } from "../contexts/AuthContext";
+import { IUser } from "../interfaces/interfaces";
 
 const Login = () => {
+  const authContext = useContext(AuthContext);
+
+  if (!authContext) {
+    throw new Error("AuthContext não foi encontrado.");
+  }
+
+  const { login } = authContext;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    console.log(email + " " + password);
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert("Preencha todos os campos!");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://192.168.0.6:3000/login", { email, password });
+      const userData: IUser = response.data;
+
+      if (userData) {
+        login(userData);
+      } else {
+        Alert.alert("Usuário não encontrado!");
+      }
+    } catch (error: any) {
+      const message = error.response?.data?.message || "Erro ao fazer login";
+      Alert.alert(message);
+    }
+    
   };
 
   return (
@@ -15,10 +43,10 @@ const Login = () => {
       <Image source={require("../../assets/BACON_HOLDER.jpg")} style={styles.image} />
 
       <Text style={styles.text}>Email</Text>
-      <TextInput style={styles.input} placeholder="nome@email.com" autoCapitalize="none" keyboardType="email-address" />
+      <TextInput style={styles.input} placeholder="nome@email.com" autoCapitalize="none" keyboardType="email-address" onChangeText={setEmail} />
 
       <Text style={styles.text}>Senha</Text>
-      <TextInput style={styles.input} placeholder="senha@123" secureTextEntry />
+      <TextInput style={styles.input} placeholder="senha@123" secureTextEntry onChangeText={setPassword} />
 
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.textButton}>Entrar</Text>
@@ -32,7 +60,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "fff",
+    backgroundColor: "#fff",
     padding: 20,
   },
   header: {

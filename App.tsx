@@ -5,14 +5,16 @@ import Home from "./src/pages/Home";
 
 const App = () => {
   return (
-    <Login />
+    <AuthProvider>
+      <Login />
+    </AuthProvider>
     /*
     <SafeAreaView>
       <StatusBar />
       <AuthProvider>
         <Login />
         <Home />
-      </AuthProvider>
+      
     </SafeAreaView>
     */
   );
