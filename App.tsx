@@ -1,32 +1,26 @@
 import { StyleSheet, Text, View, StatusBar, SafeAreaView } from "react-native";
-import Login from "./src/pages/Login";
 import { AuthProvider } from "./src/contexts/AuthContext";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import Login from "./src/pages/Login";
 import Home from "./src/pages/Home";
+
+const Stack = createStackNavigator();
 
 const App = () => {
   return (
-    <AuthProvider>
-      <Login />
-    </AuthProvider>
-    /*
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <StatusBar />
       <AuthProvider>
-        <Login />
-        <Home />
-      
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Login">
+            <Stack.Screen name="Login" component={Login} options={{ header: () => <></> }} />
+            <Stack.Screen name="Home" component={Home} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AuthProvider>
     </SafeAreaView>
-    */
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
 
 export default App;
