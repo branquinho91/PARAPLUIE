@@ -1,11 +1,9 @@
 import { useState, useContext } from "react";
 import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import axios from "axios";
-import { AuthContext } from "../contexts/AuthContext";
-import { IUser } from "../interfaces/interfaces";
+import { CommonActions } from "@react-navigation/native";
 
 const Login = ({ navigation }) => {
-  const { login, user } = useContext(AuthContext);  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -15,21 +13,38 @@ const Login = ({ navigation }) => {
       return;
     }
     try {
-      const { data } = await axios.post<IUser>(process.env.EXPO_PUBLIC_API_URL + "/login", { email, password });
-      // somente profile e name
-      const userData = data;
+      const { data } = await axios.post(process.env.EXPO_PUBLIC_API_URL + "/login", { email, password });
 
-      if (userData) {
-        login(userData);
-        if (userData.profile === "admin") {
-          navigation.navigate("Home");
-        }
+      if (data.profile === "admin") {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: "Home" }],
+          }),
+        );
+      } else if (data.profile === "filial") {
+        navigation.navigate("filial");
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: "filial" }],
+          }),
+        );
+      } else if (data.profile === "motorista") {
+        navigation.navigate("motorista");
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: "motorista" }],
+          }),
+        );
       } else {
         Alert.alert("Usuário não encontrado!");
       }
     } catch (error) {
       const message = error.response?.data?.message || "Erro ao fazer login";
       Alert.alert(message);
+      console.log(error);
     }
   };
 
