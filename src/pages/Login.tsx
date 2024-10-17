@@ -23,19 +23,17 @@ const Login = ({ navigation }) => {
           }),
         );
       } else if (data.profile === "filial") {
-        navigation.navigate("filial");
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{ name: "filial" }],
+            routes: [{ name: "ListMovements" }],
           }),
         );
       } else if (data.profile === "motorista") {
-        navigation.navigate("motorista");
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{ name: "motorista" }],
+            routes: [{ name: "DriverListMovements" }],
           }),
         );
       } else {
@@ -51,7 +49,7 @@ const Login = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>PARAPLUIE Farmácias</Text>
-      <Image source={require("../../assets/BACON_HOLDER.jpg")} style={styles.image} />
+      <Image source={require("../../assets/YELLOW_UMBRELLA.png")} style={styles.image} />
 
       <Text style={styles.text}>Email</Text>
       <TextInput style={styles.input} placeholder="nome@email.com" autoCapitalize="none" keyboardType="email-address" onChangeText={setEmail} />
