@@ -4,7 +4,7 @@ import { View, Text } from "react-native";
 const ListProducts = () => {
   return (
     <View>
-      <Text>List Movements Screen</Text>
+      <Text>ListProducts</Text>
     </View>
   );
 };

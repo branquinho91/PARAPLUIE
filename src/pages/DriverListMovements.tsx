@@ -4,7 +4,7 @@ import { View, Text } from "react-native";
 const DriverListMovements = () => {
   return (
     <View>
-      <Text>List Movements Screen</Text>
+      <Text>DriverListMovements</Text>
     </View>
   );
 };
