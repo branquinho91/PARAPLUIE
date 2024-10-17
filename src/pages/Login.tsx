@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#fff",
-    padding: 20,
   },
   header: {
     fontSize: 24,
@@ -107,8 +106,8 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 150,
-    height: 100,
-    marginBottom: 20,
+    height: 110,
+    marginBottom: 10,
   },
   button: {
     width: "25%",
