@@ -3,7 +3,7 @@ import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } fro
 import axios from "axios";
 import { CommonActions } from "@react-navigation/native";
 
-const Login = ({ navigation }) => {
+const Login = ({ navigation }: any) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -40,9 +40,7 @@ const Login = ({ navigation }) => {
         Alert.alert("Usuário não encontrado!");
       }
     } catch (error) {
-      const message = error.response?.data?.message || "Erro ao fazer login";
-      Alert.alert(message);
-      console.log(error);
+      Alert.alert(String(error));
     }
   };
 
@@ -52,10 +50,21 @@ const Login = ({ navigation }) => {
       <Image source={require("../../assets/YELLOW_UMBRELLA.png")} style={styles.image} />
 
       <Text style={styles.text}>Email</Text>
-      <TextInput style={styles.input} placeholder="nome@email.com" autoCapitalize="none" keyboardType="email-address" onChangeText={setEmail} />
+      <TextInput 
+        style={styles.input} 
+        placeholder="nome@email.com" 
+        autoCapitalize="none" 
+        keyboardType="email-address" 
+        onChangeText={setEmail} 
+      />
 
       <Text style={styles.text}>Senha</Text>
-      <TextInput style={styles.input} placeholder="senha@123" secureTextEntry onChangeText={setPassword} />
+      <TextInput 
+        style={styles.input} 
+        placeholder="senha@123" 
+        secureTextEntry 
+        onChangeText={setPassword}
+      />
 
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.textButton}>Entrar</Text>
