@@ -50,21 +50,10 @@ const Login = ({ navigation }: any) => {
       <Image source={require("../../assets/YELLOW_UMBRELLA.png")} style={styles.image} />
 
       <Text style={styles.text}>Email</Text>
-      <TextInput 
-        style={styles.input} 
-        placeholder="nome@email.com" 
-        autoCapitalize="none" 
-        keyboardType="email-address" 
-        onChangeText={setEmail} 
-      />
+      <TextInput style={styles.input} placeholder="nome@email.com" autoCapitalize="none" keyboardType="email-address" onChangeText={setEmail} />
 
       <Text style={styles.text}>Senha</Text>
-      <TextInput 
-        style={styles.input} 
-        placeholder="senha@123" 
-        secureTextEntry 
-        onChangeText={setPassword}
-      />
+      <TextInput style={styles.input} placeholder="senha@123" secureTextEntry onChangeText={setPassword} />
 
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.textButton}>Entrar</Text>
@@ -77,8 +66,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     backgroundColor: "#fff",
+    paddingTop: 40,
   },
   header: {
     fontSize: 24,

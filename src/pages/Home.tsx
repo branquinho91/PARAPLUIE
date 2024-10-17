@@ -1,12 +1,11 @@
-import { useState } from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import UserHeader from "../components/UserHeader";
 
-const Home = () => {
+const Home = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
-      <UserHeader />
+      <UserHeader name="Big Boss" />
 
       <View style={styles.borderView}>
         <View style={styles.cardView}>
@@ -14,7 +13,7 @@ const Home = () => {
           <Text style={styles.subHeading}>Estoque</Text>
         </View>
         <View style={styles.buttonView}>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("ListMovements")}>
             <Text style={styles.textButton}>Gerenciar</Text>
           </TouchableOpacity>
         </View>
@@ -26,7 +25,7 @@ const Home = () => {
           <Text style={styles.subHeading}>Usuários</Text>
         </View>
         <View style={styles.buttonView}>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("RegisterUser")}>
             <Text style={styles.textButton}>Gerenciar</Text>
           </TouchableOpacity>
         </View>
@@ -39,6 +38,8 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "flex-start",
+    backgroundColor: "#fff",
+    flex: 1,
   },
   borderView: {
     flexDirection: "row",
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
     marginLeft: 2,
   },
   subHeading: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
     marginLeft: 8,
     marginTop: 5,
