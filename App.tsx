@@ -13,7 +13,7 @@ const App = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar />
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName="Login">
           <Stack.Screen name="Login" component={Login} options={{ header: () => <></> }} />
           <Stack.Screen name="Home" component={Home} options={{ header: () => <></> }} />
           <Stack.Screen name="RegisterUser" component={RegisterUser} />
