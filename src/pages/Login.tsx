@@ -23,8 +23,8 @@ const Login = ({ navigation }: any) => {
     try {
       const { data } = await axios.post(`${apiUrl}/login`, { email, password });
 
-      await AsyncStorage.setItem('userProfile', data.profile);
-      await AsyncStorage.setItem('userName', data.name);
+      await AsyncStorage.setItem("userProfile", data.profile);
+      await AsyncStorage.setItem("userName", data.name);
 
       const resetNavigation = (routeName: string) => {
         navigation.dispatch(

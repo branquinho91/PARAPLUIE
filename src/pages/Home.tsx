@@ -50,7 +50,7 @@ const Home = ({ navigation }: any) => {
           <Text style={styles.subHeading}>Estoque</Text>
         </View>
         <View style={styles.buttonView}>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("ListMovements")}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("ListProducts")}>
             <Text style={styles.textButton}>Gerenciar</Text>
           </TouchableOpacity>
         </View>
