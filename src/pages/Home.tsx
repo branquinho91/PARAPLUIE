@@ -1,8 +1,21 @@
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import UserHeader from "../components/UserHeader";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { CommonActions } from "@react-navigation/native";
 
 const Home = ({ navigation }: any) => {
+  const handleLogout = () => {
+    AsyncStorage.removeItem("@name");
+    AsyncStorage.removeItem("@profile");
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "Login" }],
+      }),
+    );
+  };
+
   return (
     <View style={styles.container}>
       <UserHeader name="Big Boss" />
@@ -25,7 +38,7 @@ const Home = ({ navigation }: any) => {
           <Text style={styles.subHeading}>Usuários</Text>
         </View>
         <View style={styles.buttonView}>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("RegisterUser")}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("ListUsers")}>
             <Text style={styles.textButton}>Gerenciar</Text>
           </TouchableOpacity>
         </View>
