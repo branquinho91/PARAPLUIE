@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import axios from "axios";
 import { CommonActions } from "@react-navigation/native";
@@ -9,39 +9,47 @@ const Login = ({ navigation }: any) => {
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
-    if (!email || !password) {
+    if (!email.trim() || !password.trim()) {
       Alert.alert("Preencha todos os campos!");
       return;
     }
+
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+    if (!apiUrl) {
+      Alert.alert("Erro de configuração", "URL da API não está definida.");
+      return;
+    }
+
     try {
-      const { data } = await axios.post(process.env.EXPO_PUBLIC_API_URL + "/login", { email, password });
+      const { data } = await axios.post(`${apiUrl}/login`, { email, password });
+
+      await AsyncStorage.setItem('userProfile', data.profile);
+      await AsyncStorage.setItem('userName', data.name);
+
+      const resetNavigation = (routeName: string) => {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: routeName }],
+          }),
+        );
+      };
 
       if (data.profile === "admin") {
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: "Home" }],
-          }),
-        );
+        resetNavigation("Home");
       } else if (data.profile === "filial") {
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: "ListMovements" }],
-          }),
-        );
+        resetNavigation("ListMovements");
       } else if (data.profile === "motorista") {
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: "DriverListMovements" }],
-          }),
-        );
+        resetNavigation("DriverListMovements");
       } else {
         Alert.alert("Usuário não encontrado!");
       }
-    } catch (error) {
-      Alert.alert(String(error));
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        Alert.alert("Erro", error.response.data.message || "Erro ao fazer login.");
+      } else {
+        Alert.alert("Erro", "Ocorreu um erro. Verifique sua conexão com a internet.");
+      }
     }
   };
 

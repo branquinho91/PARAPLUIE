@@ -3,11 +3,35 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import UserHeader from "../components/UserHeader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
+import { useState, useEffect } from "react";
 
 const Home = ({ navigation }: any) => {
+  const [userProfile, setUserProfile] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadUserData = async () => {
+      try {
+        const profile = await AsyncStorage.getItem("userProfile");
+        const name = await AsyncStorage.getItem("userName");
+
+        if (profile !== null) {
+          setUserProfile(profile);
+        }
+        if (name !== null) {
+          setUserName(name);
+        }
+      } catch (error) {
+        console.log("Erro ao carregar os dados do usuário:", error);
+      }
+    };
+
+    loadUserData();
+  }, []);
+
   const handleLogout = () => {
-    AsyncStorage.removeItem("@name");
-    AsyncStorage.removeItem("@profile");
+    AsyncStorage.removeItem("userProfile");
+    AsyncStorage.removeItem("userName");
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
@@ -18,7 +42,7 @@ const Home = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-      <UserHeader name="Big Boss" />
+      <UserHeader name={userName || "Usuário desconhecido"} />
 
       <View style={styles.borderView}>
         <View style={styles.cardView}>
