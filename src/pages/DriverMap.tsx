@@ -1,12 +1,12 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-const ListProducts = () => {
+const DriverMap = () => {
   return (
     <View>
-      <Text>ListProducts</Text>
+      <Text>DriverMap</Text>
     </View>
   );
 };
 
-export default ListProducts;
+export default DriverMap;
