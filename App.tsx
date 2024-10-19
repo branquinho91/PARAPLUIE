@@ -36,7 +36,7 @@ const App = () => {
         setLoading(false);
       }
     };
-    
+
     checkLogin();
   }, []);
 
