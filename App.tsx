@@ -12,6 +12,7 @@ import ListMovements from "./src/pages/ListMovements";
 import RegisterMovements from "./src/pages/RegisterMovements";
 import DriverListMovements from "./src/pages/DriverListMovements";
 import DriverMap from "./src/pages/DriverMap";
+import UserHeader from "./src/components/UserHeader";
 
 const Stack = createStackNavigator();
 
@@ -52,15 +53,22 @@ const App = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar />
       <NavigationContainer>
-        <Stack.Navigator initialRouteName={initialRoute ?? "Login"}>
+        {/* <Stack.Navigator initialRouteName={initialRoute ?? "Login"}> */}
+        {/* REMOVER COMENTÁRIO AO FINAL */}
+        <Stack.Navigator initialRouteName={"ListProducts"}>
+
           {/* TODOS usuários */}
           <Stack.Screen name="Login" component={Login} options={{ header: () => <></> }} />
 
           {/* admin */}
           <Stack.Screen name="Home" component={Home} options={{ header: () => <></> }} />
+          <Stack.Screen
+            name="ListProducts"
+            component={ListProducts}
+            options={{ headerStyle: { backgroundColor: "#ccc" }, title: "Home" }}
+          />
           <Stack.Screen name="ListUsers" component={ListUsers} />
           <Stack.Screen name="RegisterUser" component={RegisterUser} />
-          <Stack.Screen name="ListProducts" component={ListProducts} />
 
           {/* filial */}
           <Stack.Screen name="ListMovements" component={ListMovements} />
