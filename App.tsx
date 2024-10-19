@@ -1,24 +1,58 @@
-import { StatusBar, SafeAreaView } from "react-native";
+import { useState, useEffect } from "react";
+import { StatusBar, SafeAreaView, ActivityIndicator, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Login from "./src/pages/Login";
 import Home from "./src/pages/Home";
-import RegisterUser from "./src/pages/RegisterUser";
-import ListMovements from "./src/pages/ListMovements";
-import DriverListMovements from "./src/pages/DriverListMovements";
-import RegisterMovements from "./src/pages/RegisterMovements";
-import ListProducts from "./src/pages/ListProducts";
 import ListUsers from "./src/pages/ListUsers";
+import RegisterUser from "./src/pages/RegisterUser";
+import ListProducts from "./src/pages/ListProducts";
+import ListMovements from "./src/pages/ListMovements";
+import RegisterMovements from "./src/pages/RegisterMovements";
+import DriverListMovements from "./src/pages/DriverListMovements";
 import DriverMap from "./src/pages/DriverMap";
 
 const Stack = createStackNavigator();
 
 const App = () => {
+  const [initialRoute, setInitialRoute] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const checkLogin = async () => {
+      try {
+        const userProfile = await AsyncStorage.getItem("userProfile");
+
+        if (userProfile) {
+          setInitialRoute(userProfile === "admin" ? "Home" : userProfile === "filial" ? "ListMovements" : "DriverListMovements");
+        } else {
+          setInitialRoute("Login");
+        }
+      } catch (error) {
+        console.error("Erro ao buscar o perfil do usuário:", error);
+        setInitialRoute("Login");
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    checkLogin();
+  }, []);
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#007bff" />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar />
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName={initialRoute ?? "Login"}>
           {/* TODOS usuários */}
           <Stack.Screen name="Login" component={Login} options={{ header: () => <></> }} />
 
