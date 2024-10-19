@@ -53,22 +53,28 @@ const App = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar />
       <NavigationContainer>
+
+
+
         {/* <Stack.Navigator initialRouteName={initialRoute ?? "Login"}> */}
         {/* REMOVER COMENTÁRIO AO FINAL */}
-        <Stack.Navigator initialRouteName={"ListProducts"}>
 
+
+
+
+
+
+
+
+        <Stack.Navigator initialRouteName={"ListUsers"}>
           {/* TODOS usuários */}
           <Stack.Screen name="Login" component={Login} options={{ header: () => <></> }} />
 
           {/* admin */}
           <Stack.Screen name="Home" component={Home} options={{ header: () => <></> }} />
-          <Stack.Screen
-            name="ListProducts"
-            component={ListProducts}
-            options={{ headerStyle: { backgroundColor: "#ccc" }, title: "Home" }}
-          />
-          <Stack.Screen name="ListUsers" component={ListUsers} />
-          <Stack.Screen name="RegisterUser" component={RegisterUser} />
+          <Stack.Screen name="ListProducts" component={ListProducts} options={{ headerStyle: { backgroundColor: "#ccc" }, title: "Home" }} />
+          <Stack.Screen name="ListUsers" component={ListUsers} options={{ headerStyle: { backgroundColor: "#ccc" }, title: "Home" }} />
+          <Stack.Screen name="RegisterUser" component={RegisterUser} options={{ headerStyle: { backgroundColor: "#ccc" }, title: "Lista de Usuários" }} />
 
           {/* filial */}
           <Stack.Screen name="ListMovements" component={ListMovements} />
