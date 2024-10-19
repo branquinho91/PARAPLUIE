@@ -16,6 +16,7 @@ const ListProducts = () => {
   const [searchInput, setSearchInput] = useState("");
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
+  // Carrega a lista de produtos ao montar componente
   useEffect(() => {
     const getProducts = async () => {
       try {
@@ -28,6 +29,7 @@ const ListProducts = () => {
     getProducts();
   }, []);
 
+  // Filtra a lista de produtos de acordo com o input de busca
   useEffect(() => {
     setFilteredProducts(products.filter((product) => product.product_name.toLowerCase().includes(searchInput.toLowerCase())));
   }, [searchInput, products]);
