@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { View, Text, StyleSheet, TextInput, FlatList, Alert, Image, TouchableOpacity, Switch } from "react-native";
+import { View, Text, StyleSheet, TextInput, FlatList, Alert, TouchableOpacity, Switch } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 type User = {
@@ -27,6 +27,7 @@ const ListUsers = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
+      {/* Header */}
       <Text style={styles.header}>Lista de Usuários</Text>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("RegisterUser")}>
         <Text style={styles.textButton}>Adicionar Usuário</Text>

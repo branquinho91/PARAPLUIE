@@ -66,7 +66,7 @@ const App = () => {
 
 
 
-        <Stack.Navigator initialRouteName={"ListUsers"}>
+        <Stack.Navigator initialRouteName={"RegisterUser"}>
           {/* TODOS usuários */}
           <Stack.Screen name="Login" component={Login} options={{ header: () => <></> }} />
 
