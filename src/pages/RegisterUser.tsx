@@ -1,18 +1,15 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 type newUser = {
   profile: string;
   name: string;
-  active: boolean;
   document: string;
   full_address: string;
   email: string;
   password: string;
-  //createdAt: string;
-  //updatedAt: string;
 };
 
 const RegisterUser = ({ navigation }: any) => {
@@ -34,13 +31,55 @@ const RegisterUser = ({ navigation }: any) => {
   };
 
   const setMotorista = () => {
-    clearFields();
-    setProfile("motorista");
+    if (profile !== "motorista") {
+      setProfile("motorista");
+    }
   };
 
   const setFilial = () => {
-    clearFields();
-    setProfile("filial");
+    if (profile !== "filial") {
+      setProfile("filial");
+    }
+  };
+
+  const submit = () => {
+    if (profile === "usuário") {
+      Alert.alert("Escolha entre motorista ou filial!");
+      return;
+    }
+
+    if (!name.trim() || !document.trim() || !full_address.trim() || !email.trim() || !password.trim()) {
+      Alert.alert("Preencha todos os campos corretamente!");
+      return;
+    }
+
+    if (password !== password2) {
+      Alert.alert("Senhas não conferem!");
+      return;
+    }
+
+    const newUser: newUser = {
+      profile: profile,
+      name: name,
+      document: document,
+      full_address: full_address,
+      email: email,
+      password: password,
+    };
+
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+    axios
+      .post(`${apiUrl}/register`, newUser)
+      .then((response) => {
+        console.log(response.data);
+        Alert.alert("Usuário cadastrado com sucesso!");
+        clearFields();
+        setProfile("usuário");
+      })
+      .catch((error) => {
+        console.log(error);
+        Alert.alert("Erro ao cadastrar usuário!", String(error));
+      });
   };
 
   return (
@@ -114,18 +153,18 @@ const RegisterUser = ({ navigation }: any) => {
         {/* Senha */}
         <View style={styles.formElement}>
           <Text style={styles.inputText}>Senha:</Text>
-          <TextInput style={styles.input} placeholder="senha@123" onChangeText={setPassword} value={password} />
+          <TextInput style={styles.input} placeholder="senha@123" onChangeText={setPassword} value={password} secureTextEntry />
         </View>
 
         {/* Confirmar senha */}
         <View style={styles.formElement}>
           <Text style={styles.inputText}>Confirmar senha:</Text>
-          <TextInput style={styles.input} placeholder="senha@123" onChangeText={setPassword2} value={password2} />
+          <TextInput style={styles.input} placeholder="senha@123" onChangeText={setPassword2} value={password2} secureTextEntry />
         </View>
       </View>
 
-      {/* Clear Button */}
       <View style={styles.bottomButtonsView}>
+        {/* Clear Button */}
         <TouchableOpacity
           style={styles.submitButton}
           onPress={() => {
@@ -137,11 +176,8 @@ const RegisterUser = ({ navigation }: any) => {
         </TouchableOpacity>
 
         {/* Submit Button */}
-        {/* FAZER O ONCLICK DO SUBMIT BUTTON */}
-        {/* FAZER O ONCLICK DO SUBMIT BUTTON */}
-        {/* FAZER O ONCLICK DO SUBMIT BUTTON */}
-        <TouchableOpacity style={styles.submitButton} onPress={() => {}}>
-          <Text style={styles.submitButtonText}>Registrar</Text>
+        <TouchableOpacity style={styles.submitButton} onPress={submit}>
+          <Text style={styles.submitButtonText}>Cadastrar</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
