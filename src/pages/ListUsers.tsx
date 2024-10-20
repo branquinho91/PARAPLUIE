@@ -31,10 +31,19 @@ const ListUsers = ({ navigation }: any) => {
           Alert.alert("Erro ao buscar os usuários", String(error));
         }
       };
-
       getUsers();
     }, []),
   );
+
+  const handleStatusChange = async (id: number) => {
+    try {
+      await axios.patch(`${apiUrl}/users/${id}/toggle-status`);
+      const response = await axios.get(`${apiUrl}/users`);
+      setListaUsuarios(response.data);
+    } catch (error) {
+      Alert.alert("Erro ao alterar o status do usuário", String(error));
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -54,7 +63,12 @@ const ListUsers = ({ navigation }: any) => {
             <View style={[styles.cardView, item.profile === "filial" ? styles.blueBg : styles.greenBg]}>
               <View style={styles.innerCardView}>
                 <MaterialCommunityIcons name={item.profile === "filial" ? "store" : "motorbike"} size={45} color="#000" />
-                <Switch value={item.status === 1} />
+                <Switch
+                  value={item.status === 1}
+                  onValueChange={() => {
+                    handleStatusChange(item.id);
+                  }}
+                />
               </View>
               <Text style={styles.userName}>{item.name}</Text>
             </View>
