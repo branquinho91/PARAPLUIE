@@ -12,7 +12,6 @@ import ListMovements from "./src/pages/ListMovements";
 import RegisterMovements from "./src/pages/RegisterMovements";
 import DriverListMovements from "./src/pages/DriverListMovements";
 import DriverMap from "./src/pages/DriverMap";
-import UserHeader from "./src/components/UserHeader";
 
 const Stack = createStackNavigator();
 
@@ -55,27 +54,27 @@ const App = () => {
       <NavigationContainer>
         {/* <Stack.Navigator initialRouteName={initialRoute ?? "Login"}> */}
         {/* REMOVER COMENTÁRIO AO FINAL */}
-        <Stack.Navigator initialRouteName={"ListProducts"}>
 
+        <Stack.Navigator initialRouteName={"Login"}>
           {/* TODOS usuários */}
           <Stack.Screen name="Login" component={Login} options={{ header: () => <></> }} />
 
           {/* admin */}
           <Stack.Screen name="Home" component={Home} options={{ header: () => <></> }} />
+          <Stack.Screen name="ListProducts" component={ListProducts} options={{ headerStyle: { backgroundColor: "#ccc" }, title: "Home" }} />
+          <Stack.Screen name="ListUsers" component={ListUsers} options={{ headerStyle: { backgroundColor: "#ccc" }, title: "Home" }} />
           <Stack.Screen
-            name="ListProducts"
-            component={ListProducts}
-            options={{ headerStyle: { backgroundColor: "#ccc" }, title: "Home" }}
+            name="RegisterUser"
+            component={RegisterUser}
+            options={{ headerStyle: { backgroundColor: "#ccc" }, title: "Lista de Usuários" }}
           />
-          <Stack.Screen name="ListUsers" component={ListUsers} />
-          <Stack.Screen name="RegisterUser" component={RegisterUser} />
 
           {/* filial */}
-          <Stack.Screen name="ListMovements" component={ListMovements} />
+          <Stack.Screen name="ListMovements" component={ListMovements} options={{ header: () => <></> }} />
           <Stack.Screen name="RegisterMovements" component={RegisterMovements} />
 
           {/* motorista */}
-          <Stack.Screen name="DriverListMovements" component={DriverListMovements} />
+          <Stack.Screen name="DriverListMovements" component={DriverListMovements} options={{ header: () => <></> }} />
           <Stack.Screen name="DriverMap" component={DriverMap} />
         </Stack.Navigator>
       </NavigationContainer>
