@@ -60,24 +60,23 @@ const RegisterUser = ({ navigation }: any) => {
 
     const newUser: newUser = {
       profile: profile,
-      name: name,
-      document: document,
-      full_address: full_address,
-      email: email,
-      password: password,
+      name: name.trim(),
+      document: document.trim(),
+      full_address: full_address.trim(),
+      email: email.trim(),
+      password: password.trim(),
     };
 
     const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
     axios
       .post(`${apiUrl}/register`, newUser)
-      .then((response) => {
-        console.log(response.data);
+      .then(() => {
         Alert.alert("Usuário cadastrado com sucesso!");
         clearFields();
         setProfile("usuário");
       })
       .catch((error) => {
-        console.log(error);
         Alert.alert("Erro ao cadastrar usuário!", String(error));
       });
   };
