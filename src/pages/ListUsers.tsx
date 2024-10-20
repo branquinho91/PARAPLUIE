@@ -1,7 +1,8 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { View, Text, StyleSheet, FlatList, Alert, TouchableOpacity, Switch } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useFocusEffect } from "@react-navigation/native";
 
 type User = {
   id: number;
@@ -20,17 +21,20 @@ const ListUsers = ({ navigation }: any) => {
   const [listaUsuarios, setListaUsuarios] = useState<User[]>([]);
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
-  useEffect(() => {
-    const getUsers = async () => {
-      try {
-        const response = await axios.get(`${apiUrl}/users`);
-        setListaUsuarios(response.data);
-      } catch (error) {
-        Alert.alert("Erro ao buscar os usuários", String(error));
-      }
-    };
-    getUsers();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      const getUsers = async () => {
+        try {
+          const response = await axios.get(`${apiUrl}/users`);
+          setListaUsuarios(response.data);
+        } catch (error) {
+          Alert.alert("Erro ao buscar os usuários", String(error));
+        }
+      };
+
+      getUsers();
+    }, []),
+  );
 
   return (
     <View style={styles.container}>
