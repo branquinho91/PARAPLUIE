@@ -1,29 +1,36 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { View, Text, StyleSheet, TextInput, FlatList, Alert, TouchableOpacity, Switch } from "react-native";
+import { View, Text, StyleSheet, FlatList, Alert, TouchableOpacity, Switch } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 type User = {
+  id: number;
   profile: string;
   name: string;
-  active: boolean;
-  //document: string;
-  //full_address: string;
-  //email: string;
-  //password: string;
-  //createdAt: string;
-  //updatedAt: string;
+  document: string;
+  full_address: string;
+  email: string;
+  password: string;
+  status: number;
+  createdAt: string;
+  updatedAt: string;
 };
 
 const ListUsers = ({ navigation }: any) => {
-  const listaUsuarios: User[] = [
-    { profile: "filial", name: "Filial 1", active: true },
-    { profile: "filial", name: "Filial 2", active: true },
-    { profile: "filial", name: "Filial 3", active: true },
-    { profile: "motorista", name: "motorista 1", active: true },
-    { profile: "motorista", name: "motorista 2", active: true },
-    { profile: "motorista", name: "motorista 3", active: true },
-  ];
+  const [listaUsuarios, setListaUsuarios] = useState<User[]>([]);
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const response = await axios.get(`${apiUrl}/users`);
+        setListaUsuarios(response.data);
+      } catch (error) {
+        Alert.alert("Erro ao buscar os usuários", String(error));
+      }
+    };
+    getUsers();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -36,14 +43,14 @@ const ListUsers = ({ navigation }: any) => {
       {/* Lista de usuários */}
       <View style={styles.listView}>
         <FlatList
-          data={listaUsuarios}
+          data={listaUsuarios.slice(1) /* Utilizei o método slice(1) para não renderizar o primeiro usuário admin */}
           keyExtractor={(item, index) => index.toString()}
           numColumns={2}
           renderItem={({ item }) => (
             <View style={[styles.cardView, item.profile === "filial" ? styles.blueBg : styles.greenBg]}>
               <View style={styles.innerCardView}>
                 <MaterialCommunityIcons name={item.profile === "filial" ? "store" : "motorbike"} size={45} color="#000" />
-                <Switch value={item.active} />
+                <Switch value={item.status === 1} />
               </View>
               <Text style={styles.userName}>{item.name}</Text>
             </View>

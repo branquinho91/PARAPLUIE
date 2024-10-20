@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -123,17 +123,17 @@ const RegisterUser = ({ navigation }: any) => {
           {profile === "usuário" ? (
             <>
               <Text style={styles.inputText}>Documento:</Text>
-              <TextInput style={styles.input} placeholder="Número do documento" onChangeText={setDocument} value={document} />
+              <TextInput style={styles.input} placeholder="Número do documento" keyboardType="numeric" onChangeText={setDocument} value={document} />
             </>
           ) : profile === "motorista" ? (
             <>
               <Text style={styles.inputText}>CPF:</Text>
-              <TextInput style={styles.input} placeholder="000.000.000-00" onChangeText={setDocument} value={document} />
+              <TextInput style={styles.input} placeholder="000.000.000-00" keyboardType="numeric" onChangeText={setDocument} value={document} />
             </>
           ) : (
             <>
               <Text style={styles.inputText}>CNPJ:</Text>
-              <TextInput style={styles.input} placeholder="00.000.000/0000-00" onChangeText={setDocument} value={document} />
+              <TextInput style={styles.input} placeholder="00.000.000/0000-00" keyboardType="numeric" onChangeText={setDocument} value={document} />
             </>
           )}
         </View>
@@ -147,7 +147,7 @@ const RegisterUser = ({ navigation }: any) => {
         {/* E-mail */}
         <View style={styles.formElement}>
           <Text style={styles.inputText}>E-mail:</Text>
-          <TextInput style={styles.input} placeholder="nome@email.com" onChangeText={setEmail} value={email} />
+          <TextInput style={styles.input} placeholder="nome@email.com" keyboardType="email-address" onChangeText={setEmail} value={email} />
         </View>
 
         {/* Senha */}
