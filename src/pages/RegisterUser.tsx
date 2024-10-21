@@ -12,7 +12,7 @@ type newUser = {
   password: string;
 };
 
-const RegisterUser = ({ navigation }: any) => {
+const RegisterUser = () => {
   const [profile, setProfile] = useState("usuário");
   const [name, setName] = useState("");
   const [document, setDocument] = useState("");

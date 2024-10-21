@@ -55,7 +55,7 @@ const App = () => {
         {/* <Stack.Navigator initialRouteName={initialRoute ?? "Login"}> */}
         {/* REMOVER COMENTÁRIO AO FINAL */}
 
-        <Stack.Navigator initialRouteName={"Login"}>
+        <Stack.Navigator initialRouteName={"ListMovements"}>
           {/* TODOS usuários */}
           <Stack.Screen name="Login" component={Login} options={{ header: () => <></> }} />
 
@@ -71,7 +71,11 @@ const App = () => {
 
           {/* filial */}
           <Stack.Screen name="ListMovements" component={ListMovements} options={{ header: () => <></> }} />
-          <Stack.Screen name="RegisterMovements" component={RegisterMovements} />
+          <Stack.Screen
+            name="RegisterMovements"
+            component={RegisterMovements}
+            options={{ headerStyle: { backgroundColor: "#ccc" }, title: "Lista de Movimentações" }}
+          />
 
           {/* motorista */}
           <Stack.Screen name="DriverListMovements" component={DriverListMovements} options={{ header: () => <></> }} />
