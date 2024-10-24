@@ -9,7 +9,7 @@ import ListUsers from "./src/pages/ListUsers";
 import RegisterUser from "./src/pages/RegisterUser";
 import ListProducts from "./src/pages/ListProducts";
 import ListMovements from "./src/pages/ListMovements";
-import RegisterMovements from "./src/pages/RegisterMovements";
+import RegisterMovements from "./src/pages/RegisterMovement";
 import DriverListMovements from "./src/pages/DriverListMovements";
 import DriverMap from "./src/pages/DriverMap";
 

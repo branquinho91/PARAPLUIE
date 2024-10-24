@@ -1,7 +1,35 @@
-import { View, StyleSheet, TouchableOpacity, Text, FlatList } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Text, FlatList, Alert } from "react-native";
 import UserHeader from "../components/UserHeader";
+import { useCallback, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import axios from "axios";
+
+type Movement = {
+  filialDestino: string;
+  filialOrigem: string;
+  produto: string;
+  quantidade: number;
+  observacoes: string;
+};
 
 const ListMovements = ({ navigation }: any) => {
+  const [movementsList, setmovementsList] = useState<Movement[]>([]);
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
+  useFocusEffect(
+    useCallback(() => {
+      const getMovements = async () => {
+        try {
+          const response = await axios.get(`${apiUrl}/movements`);
+          setmovementsList(response.data);
+        } catch (error) {
+          Alert.alert("Erro ao buscar as movimentações", String(error));
+        }
+      };
+      getMovements();
+    }, []),
+  );
+
   return (
     <View style={styles.container}>
       <UserHeader navigation={navigation} />
@@ -56,7 +84,6 @@ const ListMovements = ({ navigation }: any) => {
           <FlatList
             data={listaUsuarios}
             keyExtractor={(item, index) => index.toString()}
-            numColumns={2}
             renderItem={({ item }) => (
               <View style={[styles.cardView, item.profile === "filial" ? styles.blueBg : styles.greenBg]}>
                 <View style={styles.innerCardView}>

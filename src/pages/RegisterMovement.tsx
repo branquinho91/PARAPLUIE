@@ -1,7 +1,26 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+
+type Movement = {
+  filialDestino: string;
+  filialOrigem: string;
+  produto: string;
+  quantidade: number;
+  observacoes: string;
+};
+
+type Farmacia = {
+  id: number;
+  name: string;
+};
+
+type Product = {
+  id: number;
+  product_name: string;
+  quantity: number;
+};
 
 const RegisterMovements = () => {
   const [filialDestino, setfilialDestino] = useState("");
@@ -9,6 +28,34 @@ const RegisterMovements = () => {
   const [produto, setProduto] = useState("");
   const [quantidade, setQuantidade] = useState("");
   const [observacoes, setObservacoes] = useState("");
+
+  const [farmacias, setFarmacias] = useState<Farmacia[]>([]);
+  const [produtos, setProdutos] = useState<Product[]>([]);
+
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
+  useEffect(() => {
+    const getFarmacias = async () => {
+      try {
+        const filiais = await axios.get(`${apiUrl}/branches/options`);
+        setFarmacias(filiais.data);
+      } catch (error) {
+        Alert.alert("Erro ao buscar as farmácias", String(error));
+      }
+    };
+
+    const getProdutos = async () => {
+      try {
+        const response = await axios.get(`${apiUrl}/products`);
+        setProdutos(response.data);
+      } catch (error) {
+        Alert.alert("Erro ao buscar os produtos", String(error));
+      }
+    };
+
+    getFarmacias();
+    getProdutos();
+  }, []);
 
   const clearFields = () => {
     setfilialDestino("");
@@ -18,6 +65,14 @@ const RegisterMovements = () => {
     setObservacoes("");
   };
 
+  const newMovement: Movement = {
+    filialDestino,
+    filialOrigem,
+    produto,
+    quantidade: Number(quantidade.trim()),
+    observacoes: observacoes.trim(),
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Nova movimentação</Text>
@@ -25,36 +80,36 @@ const RegisterMovements = () => {
       {/* Filial origem */}
       <Text style={styles.label}>Filial de origem</Text>
       <View style={styles.pickerContainer}>
-        <Picker style={styles.picker} selectedValue={filialDestino} onValueChange={(itemValue, itemIndex) => setfilialDestino(itemValue)}>
+        <Picker style={styles.picker} selectedValue={filialDestino} onValueChange={(itemValue) => setfilialDestino(itemValue)}>
           <Picker.Item label="Selecione a origem" value="" />
-          <Picker.Item label="Java" value="java" />
-          <Picker.Item label="JavaScript" value="javascript" />
-          <Picker.Item label="Python" value="python" />
-          <Picker.Item label="C++" value="c++" />
+          {/* Mapeando os dados da API para o Picker */}
+          {farmacias.map((farmacia) => (
+            <Picker.Item key={farmacia.id} label={farmacia.name} value={farmacia.name} />
+          ))}
         </Picker>
       </View>
 
       {/* Filial destino */}
       <Text style={styles.label}>Filial de destino</Text>
       <View style={styles.pickerContainer}>
-        <Picker style={styles.picker} selectedValue={filialOrigem} onValueChange={(itemValue, itemIndex) => setfilialOrigem(itemValue)}>
+        <Picker style={styles.picker} selectedValue={filialOrigem} onValueChange={(itemValue) => setfilialOrigem(itemValue)}>
           <Picker.Item label="Selecione o destino" value="" />
-          <Picker.Item label="Java" value="java" />
-          <Picker.Item label="JavaScript" value="javascript" />
-          <Picker.Item label="Python" value="python" />
-          <Picker.Item label="C++" value="c++" />
+          {/* Mapeando os dados da API para o Picker */}
+          {farmacias.map((farmacia) => (
+            <Picker.Item key={farmacia.id} label={farmacia.name} value={farmacia.name} />
+          ))}
         </Picker>
       </View>
 
       {/* Produto desejado */}
       <Text style={styles.label}>Produto desejado</Text>
       <View style={styles.pickerContainer}>
-        <Picker style={styles.picker} selectedValue={produto} onValueChange={(itemValue, itemIndex) => setProduto(itemValue)}>
+        <Picker style={styles.picker} selectedValue={produto} onValueChange={(itemValue) => setProduto(itemValue)}>
           <Picker.Item label="Selecione o produto" value="" />
-          <Picker.Item label="Java" value="java" />
-          <Picker.Item label="JavaScript" value="javascript" />
-          <Picker.Item label="Python" value="python" />
-          <Picker.Item label="C++" value="c++" />
+          {/* Mapeando os dados da API para o Picker */}
+          {produtos.map((produto) => (
+            <Picker.Item key={produto.id} label={`${produto.product_name} (${produto.quantity} un)`} value={produto.id} />
+          ))}
         </Picker>
       </View>
 
