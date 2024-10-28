@@ -18,6 +18,13 @@ interface Produto {
   product_id: string;
 }
 
+interface Movimentacao {
+  originBranchId: string;
+  destinationBranchId: string;
+  productId: string;
+  quantity: string;
+}
+
 const RegisterMovements = () => {
   const [filialOptions, setFilialOptions] = useState<Filial[]>([]);
   const [filialOrigem, setfilialOrigem] = useState("");
@@ -40,15 +47,37 @@ const RegisterMovements = () => {
   };
 
   const handleRegisterMovement = () => {
-    // post /movements
-    /* 
-    {
-      "originBranchId": "1",
-      "destinationBranchId": "2",
-      "productId": "1",
-      "quantity": "30",
+    if (!filialOrigem || !filialDestino || !produtoSelecionado || !quantidade) {
+      Alert.alert("Preencha todos os campos obrigatórios");
+      return;
     }
-    */
+
+    if (Number(quantidade) <= 0 || !Number.isInteger(Number(quantidade)) || Number.isNaN(Number(quantidade))) {
+      Alert.alert("Insira uma quantidade válida");
+      return;
+    }
+
+    if (filialOrigem === filialDestino) {
+      Alert.alert("A filial de origem e destino não podem ser iguais");
+      return;
+    }
+
+    const movimentacao: Movimentacao = {
+      originBranchId: filialOrigem,
+      destinationBranchId: filialDestino,
+      productId: produtoSelecionado,
+      quantity: quantidade,
+    };
+
+    axios
+      .post(`${apiUrl}/movements`, movimentacao)
+      .then(() => {
+        Alert.alert("Movimentação cadastrada com sucesso");
+        clearFields();
+      })
+      .catch((error) => {
+        Alert.alert("Erro ao cadastrar a movimentação", String(error));
+      });
   };
 
   useEffect(() => {
