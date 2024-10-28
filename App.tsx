@@ -9,7 +9,7 @@ import ListUsers from "./src/pages/ListUsers";
 import RegisterUser from "./src/pages/RegisterUser";
 import ListProducts from "./src/pages/ListProducts";
 import ListMovements from "./src/pages/ListMovements";
-import RegisterMovements from "./src/pages/RegisterMovement";
+import RegisterMovements from "./src/pages/RegisterMovements";
 import DriverListMovements from "./src/pages/DriverListMovements";
 import DriverMap from "./src/pages/DriverMap";
 
@@ -55,7 +55,7 @@ const App = () => {
         {/* <Stack.Navigator initialRouteName={initialRoute ?? "Login"}> */}
         {/* REMOVER COMENTÁRIO AO FINAL */}
 
-        <Stack.Navigator initialRouteName={"ListMovements"}>
+        <Stack.Navigator initialRouteName={"RegisterMovements"}>
           {/* TODOS usuários */}
           <Stack.Screen name="Login" component={Login} options={{ header: () => <></> }} />
 
