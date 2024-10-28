@@ -20,6 +20,7 @@ type Product = {
   id: number;
   product_name: string;
   quantity: number;
+  branch_id: number;
 };
 
 const RegisterMovements = () => {
@@ -74,17 +75,17 @@ const RegisterMovements = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.header}>Nova movimentação</Text>
 
       {/* Filial origem */}
       <Text style={styles.label}>Filial de origem</Text>
       <View style={styles.pickerContainer}>
-        <Picker style={styles.picker} selectedValue={filialDestino} onValueChange={(itemValue) => setfilialDestino(itemValue)}>
+        <Picker style={styles.picker} selectedValue={filialDestino} onValueChange={(itemValue) => setfilialOrigem(itemValue)}>
           <Picker.Item label="Selecione a origem" value="" />
           {/* Mapeando os dados da API para o Picker */}
           {farmacias.map((farmacia) => (
-            <Picker.Item key={farmacia.id} label={farmacia.name} value={farmacia.name} />
+            <Picker.Item key={farmacia.id} label={farmacia.name} value={farmacia.id} />
           ))}
         </Picker>
       </View>
@@ -92,11 +93,11 @@ const RegisterMovements = () => {
       {/* Filial destino */}
       <Text style={styles.label}>Filial de destino</Text>
       <View style={styles.pickerContainer}>
-        <Picker style={styles.picker} selectedValue={filialOrigem} onValueChange={(itemValue) => setfilialOrigem(itemValue)}>
+        <Picker style={styles.picker} selectedValue={filialOrigem} onValueChange={(itemValue) => setfilialDestino(itemValue)}>
           <Picker.Item label="Selecione o destino" value="" />
           {/* Mapeando os dados da API para o Picker */}
           {farmacias.map((farmacia) => (
-            <Picker.Item key={farmacia.id} label={farmacia.name} value={farmacia.name} />
+            <Picker.Item key={farmacia.id} label={farmacia.name} value={farmacia.id} />
           ))}
         </Picker>
       </View>
@@ -140,7 +141,7 @@ const RegisterMovements = () => {
           <Text style={styles.submitButtonText}>Cadastrar</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
