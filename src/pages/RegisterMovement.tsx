@@ -74,6 +74,34 @@ const RegisterMovements = () => {
     observacoes: observacoes.trim(),
   };
 
+  const handleRegisterMovement = async () => {
+    if (!filialOrigem || !filialDestino || !produto || !quantidade) {
+      Alert.alert("Preencha todos os campos obrigatórios");
+      return;
+    }
+
+    if (filialOrigem === filialDestino) {
+      Alert.alert("A filial de origem e destino não podem ser a mesma.");
+      return;
+    }
+
+    const produtoSelecionado = produtos.find((p) => p.id === Number(produto));
+    const quantidadeNumber = Number(quantidade);
+
+    if (!produtoSelecionado || isNaN(quantidadeNumber) || quantidadeNumber <= 0 || quantidadeNumber > produtoSelecionado.quantity) {
+      Alert.alert("Insira uma quantidade válida!");
+      return;
+    }
+
+    try {
+      await axios.post(`${apiUrl}/movements`, newMovement);
+      Alert.alert("Movimentação registrada com sucesso!");
+      clearFields();
+    } catch (error) {
+      Alert.alert("Erro ao cadastrar a movimentação", String(error));
+    }
+  };
+
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.header}>Nova movimentação</Text>
@@ -81,7 +109,7 @@ const RegisterMovements = () => {
       {/* Filial origem */}
       <Text style={styles.label}>Filial de origem</Text>
       <View style={styles.pickerContainer}>
-        <Picker style={styles.picker} selectedValue={filialDestino} onValueChange={(itemValue) => setfilialOrigem(itemValue)}>
+        <Picker style={styles.picker} selectedValue={filialOrigem} onValueChange={(itemValue) => setfilialOrigem(itemValue)}>
           <Picker.Item label="Selecione a origem" value="" />
           {/* Mapeando os dados da API para o Picker */}
           {farmacias.map((farmacia) => (
@@ -93,7 +121,7 @@ const RegisterMovements = () => {
       {/* Filial destino */}
       <Text style={styles.label}>Filial de destino</Text>
       <View style={styles.pickerContainer}>
-        <Picker style={styles.picker} selectedValue={filialOrigem} onValueChange={(itemValue) => setfilialDestino(itemValue)}>
+        <Picker style={styles.picker} selectedValue={filialDestino} onValueChange={(itemValue) => setfilialDestino(itemValue)}>
           <Picker.Item label="Selecione o destino" value="" />
           {/* Mapeando os dados da API para o Picker */}
           {farmacias.map((farmacia) => (
@@ -137,7 +165,7 @@ const RegisterMovements = () => {
         </TouchableOpacity>
 
         {/* Submit Button */}
-        <TouchableOpacity style={styles.submitButton} onPress={() => {}}>
+        <TouchableOpacity style={styles.submitButton} onPress={handleRegisterMovement}>
           <Text style={styles.submitButtonText}>Cadastrar</Text>
         </TouchableOpacity>
       </View>
