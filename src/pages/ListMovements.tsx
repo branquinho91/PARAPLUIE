@@ -4,24 +4,35 @@ import { useCallback, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 
-type Movement = {
-  filialDestino: string;
-  filialOrigem: string;
-  produto: string;
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
+interface Movimentacao {
+  id: string;
+  origem: {
+    nome: string;
+  };
+  destino: {
+    nome: string;
+  };
+  produto: {
+    nome: string;
+  };
   quantidade: number;
-  observacoes: string;
-};
+  status: string;
+}
 
 const ListMovements = ({ navigation }: any) => {
-  const [movementsList, setmovementsList] = useState<Movement[]>([]);
-  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+  const [movementsList, setmovementsList] = useState<Movimentacao[]>([]);
 
   useFocusEffect(
     useCallback(() => {
       const getMovements = async () => {
         try {
           const response = await axios.get(`${apiUrl}/movements`);
-          setmovementsList(response.data);
+          const sortedData = response.data
+            .filter((item: Movimentacao) => item.id !== undefined)
+            .sort((a: Movimentacao, b: Movimentacao) => Number(a.id) - Number(b.id));
+          setmovementsList(sortedData);
         } catch (error) {
           Alert.alert("Erro ao buscar as movimentações", String(error));
         }
@@ -40,66 +51,40 @@ const ListMovements = ({ navigation }: any) => {
         <Text style={styles.textButton}>Adicionar Movimentação</Text>
       </TouchableOpacity>
 
-      <View style={styles.cardView}>
-        <Text style={[styles.cardText, styles.bold, { textAlign: "right" }]}># 1</Text>
+      <View style={styles.listView}>
+        <FlatList
+          data={movementsList}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.cardView}>
+              <Text style={[styles.cardText, styles.bold, { textAlign: "right" }]}># {item.id}</Text>
 
-        <Text style={styles.cardText}>
-          <Text style={styles.bold}>Origem: </Text>Farmácia popular (Endereço do local)
-        </Text>
+              <Text style={styles.cardText}>
+                <Text style={styles.bold}>Origem: </Text>
+                {item.origem.nome}
+              </Text>
 
-        <Text style={styles.cardText}>
-          <Text style={styles.bold}>Destino: </Text>Farmácia central (Endereço do local)
-        </Text>
+              <Text style={styles.cardText}>
+                <Text style={styles.bold}>Destino: </Text>
+                {item.destino.nome}
+              </Text>
 
-        <Text style={styles.cardText}>
-          <Text style={styles.bold}>Produto: </Text>Lâmina Gillette - 10 un
-        </Text>
+              <Text style={styles.cardText}>
+                <Text style={styles.bold}>Produto: </Text>
+                {item.produto.nome} - {item.quantidade} un
+              </Text>
 
-        <Text style={styles.cardText}>
-          <Text style={styles.bold}>Status: </Text>Aguarda Coleta
-        </Text>
+              <Text style={styles.cardText}>
+                <Text style={styles.bold}>Status: </Text>
+                {item.status === "created" ? "Aguardando Coleta" : ""}
+              </Text>
+            </View>
+          )}
+        />
       </View>
-
-      <View style={styles.cardView}>
-        <Text style={[styles.cardText, styles.bold, { textAlign: "right" }]}># 2</Text>
-
-        <Text style={styles.cardText}>
-          <Text style={styles.bold}>Origem: </Text>Farmácia popular (Endereço do local)
-        </Text>
-
-        <Text style={styles.cardText}>
-          <Text style={styles.bold}>Destino: </Text>Farmácia central (Endereço do local)
-        </Text>
-
-        <Text style={styles.cardText}>
-          <Text style={styles.bold}>Produto: </Text>Lâmina Gillette - 10 un
-        </Text>
-
-        <Text style={styles.cardText}>
-          <Text style={styles.bold}>Status: </Text>Aguarda Coleta
-        </Text>
-      </View>
-
-      {/*<View style={styles.listView}>
-          <FlatList
-            data={listaUsuarios}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) => (
-              <View style={[styles.cardView, item.profile === "filial" ? styles.blueBg : styles.greenBg]}>
-                <View style={styles.innerCardView}>
-                  <MaterialCommunityIcons name={item.profile === "filial" ? "store" : "motorbike"} size={45} color="#000" />
-                </View>
-                <Text style={styles.userName}>{item.name}</Text>
-              </View>
-            )}
-          />
-        </View>
-        */}
     </View>
   );
 };
-
-export default ListMovements;
 
 const styles = StyleSheet.create({
   container: {
@@ -134,12 +119,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cardView: {
-    width: "80%",
+    width: "90%",
     borderColor: "#aaa",
     borderWidth: 1,
     borderRadius: 4,
     marginBottom: 20,
     padding: 10,
+    marginLeft: "5%",
   },
   cardText: {
     fontSize: 16,
@@ -149,3 +135,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
+export default ListMovements;

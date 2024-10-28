@@ -55,7 +55,7 @@ const App = () => {
         {/* <Stack.Navigator initialRouteName={initialRoute ?? "Login"}> */}
         {/* REMOVER COMENTÁRIO AO FINAL */}
 
-        <Stack.Navigator initialRouteName={"RegisterMovements"}>
+        <Stack.Navigator initialRouteName={"ListMovements"}>
           {/* TODOS usuários */}
           <Stack.Screen name="Login" component={Login} options={{ header: () => <></> }} />
 

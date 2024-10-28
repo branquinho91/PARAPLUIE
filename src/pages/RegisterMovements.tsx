@@ -62,6 +62,11 @@ const RegisterMovements = () => {
       return;
     }
 
+    if (Number(quantidade) > produtosFiltradosOptions.find((produto) => produto.product_id === produtoSelecionado)?.quantity!) {
+      Alert.alert("Quantidade desejada indisponível");
+      return;
+    }
+
     const movimentacao: Movimentacao = {
       originBranchId: filialOrigem,
       destinationBranchId: filialDestino,
