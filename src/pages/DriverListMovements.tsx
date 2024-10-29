@@ -1,8 +1,9 @@
 import { View, StyleSheet, TouchableOpacity, Image, Text, FlatList, Alert } from "react-native";
 import UserHeader from "../components/UserHeader";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -26,8 +27,40 @@ interface Movimentacao {
   }[];
 }
 
+const formatarData = (dataString: string): string => {
+  const meses = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+  const data = new Date(dataString);
+  const dia = data.getDate();
+  const mes = meses[data.getMonth()];
+  const ano = data.getFullYear();
+  const horas = String(data.getHours()).padStart(2, "0");
+  const minutos = String(data.getMinutes()).padStart(2, "0");
+
+  return `${dia} de ${mes} de ${ano} às ${horas}:${minutos}`;
+};
+
 const DriverListMovements = ({ navigation }: any) => {
   const [movementsList, setmovementsList] = useState<Movimentacao[]>([]);
+  const [userProfile, setUserProfile] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadUserData = async () => {
+      try {
+        const profile = await AsyncStorage.getItem("userProfile");
+        const name = await AsyncStorage.getItem("userName");
+
+        if (profile !== null) setUserProfile(profile);
+        if (name !== null) setUserName(name);
+      } catch (error) {
+        console.log("Erro ao carregar os dados do usuário:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadUserData();
+  }, []);
 
   const iniciarEntrega = () => {};
   const finalizarEntrega = () => {};
@@ -101,8 +134,16 @@ const DriverListMovements = ({ navigation }: any) => {
 
             <Text style={styles.cardText}>
               <Text style={styles.bold}>Histórico: </Text>
-              {item.historico.map((historico) => `${historico.data} - ${historico.status}`).join(", ")}
             </Text>
+
+            {item.historico.map((historico, index) => (
+              <>
+                <Text style={styles.cardText} key={index}>
+                  {index === 0 ? `Pedido criado - ` : index === 1 ? `• ${userName} coletou o pedido - ` : `• ${userName} entregou o pedido - `}
+                  {formatarData(historico.data)}
+                </Text>
+              </>
+            ))}
 
             {item.status === "created" ? (
               <View style={styles.buttonsView}>
