@@ -52,10 +52,7 @@ const App = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar />
       <NavigationContainer>
-        {/* <Stack.Navigator initialRouteName={initialRoute ?? "Login"}> */}
-        {/* REMOVER COMENTÁRIO AO FINAL */}
-
-        <Stack.Navigator initialRouteName={"DriverListMovements"}>
+        <Stack.Navigator initialRouteName={initialRoute ?? "Login"}>
           {/* TODOS usuários */}
           <Stack.Screen name="Login" component={Login} options={{ header: () => <></> }} />
 
