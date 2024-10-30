@@ -111,4 +111,4 @@ Exemplo de uma estrutura básica de pastas:
 - **Nome:** Gustavo Branquinho
 - **Email pessoal:** [gustavobranquinho2@gmail.com](mailto:gustavobranquinho2@gmail.com)
 - **Email acadêmico:** [gustavo_branquinho@estudante.sesisenai.org.br](mailto:gustavo_branquinho@estudante.sesisenai.org.br)
-- **LinkedIn:** [Gustavo Branquinho](https://www.linkedin.com/in/gustavo-branquinho-05232a89)
+- **LinkedIn:** [Gustavo Branquinho](https://www.linkedin.com/in/gustavobranquinho2)
