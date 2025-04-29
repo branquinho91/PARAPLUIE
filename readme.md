@@ -4,8 +4,6 @@
 
 > Este aplicativo tem como objetivo gerenciar movimentações de produtos entre origens e destinos específicos, facilitando o acompanhamento e controle em tempo real.
 
-> Vídeo explicativo do projeto: [PARAPLUIE Farmácias](https://www.youtube.com/watch?v=fGP2ygQ9rPo)
-
 ---
 
 ## Funcionalidades
